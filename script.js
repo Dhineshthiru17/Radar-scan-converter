@@ -2,7 +2,7 @@
 
 
 
-let activePanel   = 'dsp';
+let activePanel   = null;
 let activeBtn     = null;
 
 // Store original field values per panel for cancel/reset
@@ -10,7 +10,7 @@ const originalValues = {};
 
 function showPanel(name, btn) {
   // Deactivate old
-  document.getElementById('panel-' + activePanel).classList.remove('active');
+  if (activePanel) document.getElementById('panel-' + activePanel).classList.remove('active');
   if (activeBtn) activeBtn.classList.remove('active');
 
   // Activate new
