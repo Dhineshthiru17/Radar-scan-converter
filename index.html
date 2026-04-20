@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Radar Scan Converter</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="radar-anim">
+        <div class="r-ring r1"></div>
+        <div class="r-ring r2"></div>
+        <div class="r-sweep"></div>
+        <div class="r-dot"></div>
+      </div>
+    </div>
+    <h1 class="main-title">Radar Scan Converter</h1>
+    <div class="topbar-right">
+      <span class="status-dot"></span>
+      <span class="status-text">System Active</span>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="nav-label">MODULES</div>
+      <nav class="nav">
+
+        <button class="menu-item" onclick="showPanel('dsp', this)">
+          <span class="menu-icon">⬡</span>
+          <span class="menu-label">DSP</span>
+          <span class="badge">6</span>
+        </button>
+
+        <button class="menu-item" onclick="showPanel('ftc', this)">
+          <span class="menu-icon">◈</span>
+          <span class="menu-label">FTC</span>
+          <span class="badge">1</span>
+        </button>
+
+        <button class="menu-item" onclick="showPanel('geometric', this)">
+          <span class="menu-icon">◎</span>
+          <span class="menu-label">Geometric</span>
+          <span class="badge">5</span>
+        </button>
+
+        <button class="menu-item" onclick="showPanel('landmask', this)">
+          <span class="menu-icon">◬</span>
+          <span class="menu-label">Land Mask</span>
+          <span class="badge">8</span>
+        </button>
+
+        <button class="menu-item" onclick="showPanel('network', this)">
+          <span class="menu-icon">⬡</span>
+          <span class="menu-label">Network</span>
+          <span class="badge">2</span>
+        </button>
+
+        <button class="menu-item" onclick="showPanel('palette', this)">
+          <span class="menu-icon">◉</span>
+          <span class="menu-label">Palette</span>
+          <span class="badge">7</span>
+        </button>
+
+        <button class="menu-item" onclick="showPanel('stc', this)">
+          <span class="menu-icon">◈</span>
+          <span class="menu-label">STC</span>
+          <span class="badge">2</span>
+        </button>
+
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+
+
+      <!-- ── DSP ─────────────────────────────────────── -->
+      <div id="panel-dsp" class="panel active">
+        <div class="panel-header">
+          <span class="panel-icon">⬡</span>
+          <div>
+            <h2 class="panel-title">DSP</h2>
+            <p class="panel-desc">Digital Signal Processing parameters</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group">
+            <label class="field-label" for="dsp-decayFactor">Decay Factor</label>
+            <p class="field-hint">Signal attenuation per scan cycle (0–1)</p>
+            <input class="field-input" type="number" id="dsp-decayFactor" value="0.945" min="0" max="1" step="0.001" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="dsp-gain">Gain</label>
+            <p class="field-hint">Signal amplification multiplier</p>
+            <input class="field-input" type="number" id="dsp-gain" value="1.4" min="0" step="0.1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="dsp-intensityThreshold">Intensity Threshold</label>
+            <p class="field-hint">Minimum intensity level to render (0–255)</p>
+            <input class="field-input" type="number" id="dsp-intensityThreshold" value="140" min="0" max="255" step="1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="dsp-logFactor">Log Factor</label>
+            <p class="field-hint">Logarithmic compression scale factor</p>
+            <input class="field-input" type="number" id="dsp-logFactor" value="1.0" min="0" step="0.1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="dsp-noiseSuppression">Noise Suppression Threshold</label>
+            <p class="field-hint">Cutoff level for noise filtering (0–255)</p>
+            <input class="field-input" type="number" id="dsp-noiseSuppression" value="180" min="0" max="255" step="0.1" />
+          </div>
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Enable Accumulation</label>
+            <p class="field-hint">Accumulate scan data across frames</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="dsp-enableAccumulation" onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-dsp-enableAccumulation">OFF</span>
+            </div>
+          </div>
+
+        </div>
+        <div class="panel-actions">
+          <button class="btn-cancel" onclick="cancelPanel('dsp')">✕ Cancel</button>
+          <button class="btn-submit" onclick="submitPanel('dsp')">✓ Apply Changes</button>
+        </div>
+      </div>
+
+      <!-- ── FTC ─────────────────────────────────────── -->
+      <div id="panel-ftc" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">◈</span>
+          <div>
+            <h2 class="panel-title">FTC</h2>
+            <p class="panel-desc">Fast Time Constant filter settings</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group">
+            <label class="field-label" for="ftc-factor">Factor</label>
+            <p class="field-hint">FTC filter strength coefficient (0–1)</p>
+            <input class="field-input" type="number" id="ftc-factor" value="0.2" min="0" max="1" step="0.01" />
+          </div>
+
+        </div>
+        <div class="panel-actions">
+          <button class="btn-cancel" onclick="cancelPanel('ftc')">✕ Cancel</button>
+          <button class="btn-submit" onclick="submitPanel('ftc')">✓ Apply Changes</button>
+        </div>
+      </div>
+
+      <!-- ── GEOMETRIC ───────────────────────────────── -->
+      <div id="panel-geometric" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">◎</span>
+          <div>
+            <h2 class="panel-title">Geometric</h2>
+            <p class="panel-desc">Scan geometry and resolution settings</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group">
+            <label class="field-label" for="geo-azimuthBins">Azimuth Bins</label>
+            <p class="field-hint">Number of azimuth resolution bins</p>
+            <input class="field-input" type="number" id="geo-azimuthBins" value="8192" min="1" step="1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="geo-rangeBins">Range Bins</label>
+            <p class="field-hint">Number of range resolution bins</p>
+            <input class="field-input" type="number" id="geo-rangeBins" value="8192" min="1" step="1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="geo-maxRange">Max Range (meters)</label>
+            <p class="field-hint">Maximum detection range in meters</p>
+            <input class="field-input" type="number" id="geo-maxRange" value="25000" min="0" step="100" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="geo-metersToPixel">Meters to Pixel Scale</label>
+            <p class="field-hint">Conversion factor: meters per pixel</p>
+            <input class="field-input" type="number" id="geo-metersToPixel" value="0.2" min="0" step="0.01" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="geo-zoom">Zoom</label>
+            <p class="field-hint">Display zoom multiplier</p>
+            <input class="field-input" type="number" id="geo-zoom" value="3.5" min="0.1" step="0.1" />
+          </div>
+
+        </div>
+        <div class="panel-actions">
+          <button class="btn-cancel" onclick="cancelPanel('geometric')">✕ Cancel</button>
+          <button class="btn-submit" onclick="submitPanel('geometric')">✓ Apply Changes</button>
+        </div>
+      </div>
+
+      <!-- ── LAND MASK ───────────────────────────────── -->
+      <div id="panel-landmask" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">◬</span>
+          <div>
+            <h2 class="panel-title">Land Mask</h2>
+            <p class="panel-desc">Coastline masking and suppression settings</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group">
+            <label class="field-label" for="lm-allowedRange">Allowed Range (meters)</label>
+            <p class="field-hint">Tolerance zone around coastline in meters</p>
+            <input class="field-input" type="number" id="lm-allowedRange" value="5000" min="0" step="100" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="lm-cellSize">Cell Size</label>
+            <p class="field-hint">Grid cell resolution in meters</p>
+            <input class="field-input" type="number" id="lm-cellSize" value="20" min="1" step="1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="lm-range">Range (meters)</label>
+            <p class="field-hint">Total land mask detection range</p>
+            <input class="field-input" type="number" id="lm-range" value="30000" min="0" step="100" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="lm-ignoreAzStart">Ignore Azimuth Start Bins</label>
+            <p class="field-hint">Start of azimuth exclusion zone</p>
+            <input class="field-input" type="number" id="lm-ignoreAzStart" value="7538" min="0" step="1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="lm-ignoreAzEnd">Ignore Azimuth End Bins</label>
+            <p class="field-hint">End of azimuth exclusion zone</p>
+            <input class="field-input" type="number" id="lm-ignoreAzEnd" value="2706" min="0" step="1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="lm-offsetX">Offset X</label>
+            <p class="field-hint">Horizontal position offset in pixels</p>
+            <input class="field-input" type="number" id="lm-offsetX" value="-290.5" step="0.5" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="lm-offsetY">Offset Y</label>
+            <p class="field-hint">Vertical position offset in pixels</p>
+            <input class="field-input" type="number" id="lm-offsetY" value="220" step="0.5" />
+          </div>
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Enable Land Mask</label>
+            <p class="field-hint">Activate land masking overlay</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="lm-enable" checked onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-lm-enable">ON</span>
+            </div>
+          </div>
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Display Coastline</label>
+            <p class="field-hint">Render coastline boundary on screen</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="lm-displayCoastline" checked onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-lm-displayCoastline">ON</span>
+            </div>
+          </div>
+
+        </div>
+        <div class="panel-actions">
+          <button class="btn-cancel" onclick="cancelPanel('landmask')">✕ Cancel</button>
+          <button class="btn-submit" onclick="submitPanel('landmask')">✓ Apply Changes</button>
+        </div>
+      </div>
+
+      <!-- ── NETWORK ─────────────────────────────────── -->
+      <div id="panel-network" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">⬡</span>
+          <div>
+            <h2 class="panel-title">Network</h2>
+            <p class="panel-desc">Multicast network connection settings</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group">
+            <label class="field-label" for="net-multicastIp">Multicast IP</label>
+            <p class="field-hint">UDP multicast group IP address</p>
+            <input class="field-input field-input--text" type="text" id="net-multicastIp" value="225.10.10.10" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="net-port">Port</label>
+            <p class="field-hint">UDP port number for data stream (1–65535)</p>
+            <input class="field-input" type="number" id="net-port" value="50041" min="1" max="65535" step="1" />
+          </div>
+
+        </div>
+        <div class="panel-actions">
+          <button class="btn-cancel" onclick="cancelPanel('network')">✕ Cancel</button>
+          <button class="btn-submit" onclick="submitPanel('network')">✓ Apply Changes</button>
+        </div>
+      </div>
+
+      <!-- ── PALETTE ─────────────────────────────────── -->
+      <div id="panel-palette" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">◉</span>
+          <div>
+            <h2 class="panel-title">Palette</h2>
+            <p class="panel-desc">Intensity-to-colour mapping (value → RGB)</p>
+          </div>
+        </div>
+        <div class="fields-grid palette-grid">
+
+          <div class="palette-entry">
+            <div class="palette-swatch" id="sw-0" style="background:rgb(0,0,0)"></div>
+            <div class="palette-info">
+              <label class="field-label">Intensity 0</label>
+              <div class="rgb-row">
+                <span class="rgb-label">R</span><input class="rgb-input" type="number" id="pal-0-r" value="0" min="0" max="255" oninput="updateSwatch('0')" />
+                <span class="rgb-label">G</span><input class="rgb-input" type="number" id="pal-0-g" value="0" min="0" max="255" oninput="updateSwatch('0')" />
+                <span class="rgb-label">B</span><input class="rgb-input" type="number" id="pal-0-b" value="0" min="0" max="255" oninput="updateSwatch('0')" />
+              </div>
+            </div>
+          </div>
+
+          <div class="palette-entry">
+            <div class="palette-swatch" id="sw-43" style="background:rgb(0,0,255)"></div>
+            <div class="palette-info">
+              <label class="field-label">Intensity 43</label>
+              <div class="rgb-row">
+                <span class="rgb-label">R</span><input class="rgb-input" type="number" id="pal-43-r" value="0" min="0" max="255" oninput="updateSwatch('43')" />
+                <span class="rgb-label">G</span><input class="rgb-input" type="number" id="pal-43-g" value="0" min="0" max="255" oninput="updateSwatch('43')" />
+                <span class="rgb-label">B</span><input class="rgb-input" type="number" id="pal-43-b" value="255" min="0" max="255" oninput="updateSwatch('43')" />
+              </div>
+            </div>
+          </div>
+
+          <div class="palette-entry">
+            <div class="palette-swatch" id="sw-85" style="background:rgb(0,255,255)"></div>
+            <div class="palette-info">
+              <label class="field-label">Intensity 85</label>
+              <div class="rgb-row">
+                <span class="rgb-label">R</span><input class="rgb-input" type="number" id="pal-85-r" value="0" min="0" max="255" oninput="updateSwatch('85')" />
+                <span class="rgb-label">G</span><input class="rgb-input" type="number" id="pal-85-g" value="255" min="0" max="255" oninput="updateSwatch('85')" />
+                <span class="rgb-label">B</span><input class="rgb-input" type="number" id="pal-85-b" value="255" min="0" max="255" oninput="updateSwatch('85')" />
+              </div>
+            </div>
+          </div>
+
+          <div class="palette-entry">
+            <div class="palette-swatch" id="sw-128" style="background:rgb(0,255,0)"></div>
+            <div class="palette-info">
+              <label class="field-label">Intensity 128</label>
+              <div class="rgb-row">
+                <span class="rgb-label">R</span><input class="rgb-input" type="number" id="pal-128-r" value="0" min="0" max="255" oninput="updateSwatch('128')" />
+                <span class="rgb-label">G</span><input class="rgb-input" type="number" id="pal-128-g" value="255" min="0" max="255" oninput="updateSwatch('128')" />
+                <span class="rgb-label">B</span><input class="rgb-input" type="number" id="pal-128-b" value="0" min="0" max="255" oninput="updateSwatch('128')" />
+              </div>
+            </div>
+          </div>
+
+          <div class="palette-entry">
+            <div class="palette-swatch" id="sw-170" style="background:rgb(255,255,0)"></div>
+            <div class="palette-info">
+              <label class="field-label">Intensity 170</label>
+              <div class="rgb-row">
+                <span class="rgb-label">R</span><input class="rgb-input" type="number" id="pal-170-r" value="255" min="0" max="255" oninput="updateSwatch('170')" />
+                <span class="rgb-label">G</span><input class="rgb-input" type="number" id="pal-170-g" value="255" min="0" max="255" oninput="updateSwatch('170')" />
+                <span class="rgb-label">B</span><input class="rgb-input" type="number" id="pal-170-b" value="0" min="0" max="255" oninput="updateSwatch('170')" />
+              </div>
+            </div>
+          </div>
+
+          <div class="palette-entry">
+            <div class="palette-swatch" id="sw-213" style="background:rgb(255,128,0)"></div>
+            <div class="palette-info">
+              <label class="field-label">Intensity 213</label>
+              <div class="rgb-row">
+                <span class="rgb-label">R</span><input class="rgb-input" type="number" id="pal-213-r" value="255" min="0" max="255" oninput="updateSwatch('213')" />
+                <span class="rgb-label">G</span><input class="rgb-input" type="number" id="pal-213-g" value="128" min="0" max="255" oninput="updateSwatch('213')" />
+                <span class="rgb-label">B</span><input class="rgb-input" type="number" id="pal-213-b" value="0" min="0" max="255" oninput="updateSwatch('213')" />
+              </div>
+            </div>
+          </div>
+
+          <div class="palette-entry">
+            <div class="palette-swatch" id="sw-255" style="background:rgb(255,0,0)"></div>
+            <div class="palette-info">
+              <label class="field-label">Intensity 255</label>
+              <div class="rgb-row">
+                <span class="rgb-label">R</span><input class="rgb-input" type="number" id="pal-255-r" value="255" min="0" max="255" oninput="updateSwatch('255')" />
+                <span class="rgb-label">G</span><input class="rgb-input" type="number" id="pal-255-g" value="0" min="0" max="255" oninput="updateSwatch('255')" />
+                <span class="rgb-label">B</span><input class="rgb-input" type="number" id="pal-255-b" value="0" min="0" max="255" oninput="updateSwatch('255')" />
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="panel-actions">
+          <button class="btn-cancel" onclick="cancelPanel('palette')">✕ Cancel</button>
+          <button class="btn-submit" onclick="submitPanel('palette')">✓ Apply Changes</button>
+        </div>
+      </div>
+
+      <!-- ── STC ─────────────────────────────────────── -->
+      <div id="panel-stc" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">◈</span>
+          <div>
+            <h2 class="panel-title">STC</h2>
+            <p class="panel-desc">Sensitivity Time Control settings</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group">
+            <label class="field-label" for="stc-radius">Radius</label>
+            <p class="field-hint">STC suppression radius in meters</p>
+            <input class="field-input" type="number" id="stc-radius" value="1700" min="0" step="10" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="stc-strength">Strength</label>
+            <p class="field-hint">STC attenuation strength (0–1)</p>
+            <input class="field-input" type="number" id="stc-strength" value="0.3" min="0" max="1" step="0.01" />
+          </div>
+
+        </div>
+        <div class="panel-actions">
+          <button class="btn-cancel" onclick="cancelPanel('stc')">✕ Cancel</button>
+          <button class="btn-submit" onclick="submitPanel('stc')">✓ Apply Changes</button>
+        </div>
+      </div>
+
+      <!-- TOAST NOTIFICATION -->
+      <div id="toast" class="toast"></div>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
