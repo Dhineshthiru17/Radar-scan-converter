@@ -20,10 +20,17 @@
       </div>
     </div>
     <h1 class="main-title">Radar Scan Converter</h1>
-    <div class="topbar-right">
-      <!-- <span class="status-dot"></span>
-      <span class="status-text">System Active</span> -->
-    </div>
+
+
+
+    <!-- <div class="topbar-right"> -->
+      <!-- <span class="status-dot"></span> -->
+      <!-- <span class="status-text">System Active</span> -->
+    <!-- </div> -->
+
+
+
+    
   </header>
 
   <div class="layout">
@@ -335,96 +342,101 @@
           <span class="panel-icon">◉</span>
           <div>
             <h2 class="panel-title">Palette</h2>
-            <p class="panel-desc">Intensity-to-colour mapping (value → RGB)</p>
+            <p class="panel-desc">Intensity-to-colour mapping — click a swatch to pick a colour</p>
           </div>
         </div>
-        <div class="fields-grid palette-grid">
 
-          <div class="palette-entry">
-            <div class="palette-swatch" id="sw-0" style="background:rgb(0,0,0)"></div>
-            <div class="palette-info">
-              <label class="field-label">Intensity 0</label>
-              <div class="rgb-row">
-                <span class="rgb-label">R</span><input class="rgb-input" type="number" id="pal-0-r" value="0" min="0" max="255" oninput="updateSwatch('0')" />
-                <span class="rgb-label">G</span><input class="rgb-input" type="number" id="pal-0-g" value="0" min="0" max="255" oninput="updateSwatch('0')" />
-                <span class="rgb-label">B</span><input class="rgb-input" type="number" id="pal-0-b" value="0" min="0" max="255" oninput="updateSwatch('0')" />
-              </div>
+        <!-- Gradient preview bar -->
+        <div class="palette-gradient-bar" id="gradientBar"></div>
+
+        <div class="palette-picker-grid">
+
+          <div class="palette-picker-entry">
+            <label class="field-label">Intensity 0</label>
+            <div class="color-picker-wrap">
+              <input type="color" class="color-native" id="cpick-0" value="#000000" oninput="onColorPick('0', this.value)" />
+              <div class="color-preview" id="cprev-0" style="background:#000000" onclick="document.getElementById('cpick-0').click()"></div>
+            </div>
+            <div class="color-meta">
+              <span class="color-hex" id="chex-0">#000000</span>
+              <span class="color-rgb" id="crgb-0">rgb(0, 0, 0)</span>
             </div>
           </div>
 
-          <div class="palette-entry">
-            <div class="palette-swatch" id="sw-43" style="background:rgb(0,0,255)"></div>
-            <div class="palette-info">
-              <label class="field-label">Intensity 43</label>
-              <div class="rgb-row">
-                <span class="rgb-label">R</span><input class="rgb-input" type="number" id="pal-43-r" value="0" min="0" max="255" oninput="updateSwatch('43')" />
-                <span class="rgb-label">G</span><input class="rgb-input" type="number" id="pal-43-g" value="0" min="0" max="255" oninput="updateSwatch('43')" />
-                <span class="rgb-label">B</span><input class="rgb-input" type="number" id="pal-43-b" value="255" min="0" max="255" oninput="updateSwatch('43')" />
-              </div>
+          <div class="palette-picker-entry">
+            <label class="field-label">Intensity 43</label>
+            <div class="color-picker-wrap">
+              <input type="color" class="color-native" id="cpick-43" value="#0000ff" oninput="onColorPick('43', this.value)" />
+              <div class="color-preview" id="cprev-43" style="background:#0000ff" onclick="document.getElementById('cpick-43').click()"></div>
+            </div>
+            <div class="color-meta">
+              <span class="color-hex" id="chex-43">#0000ff</span>
+              <span class="color-rgb" id="crgb-43">rgb(0, 0, 255)</span>
             </div>
           </div>
 
-          <div class="palette-entry">
-            <div class="palette-swatch" id="sw-85" style="background:rgb(0,255,255)"></div>
-            <div class="palette-info">
-              <label class="field-label">Intensity 85</label>
-              <div class="rgb-row">
-                <span class="rgb-label">R</span><input class="rgb-input" type="number" id="pal-85-r" value="0" min="0" max="255" oninput="updateSwatch('85')" />
-                <span class="rgb-label">G</span><input class="rgb-input" type="number" id="pal-85-g" value="255" min="0" max="255" oninput="updateSwatch('85')" />
-                <span class="rgb-label">B</span><input class="rgb-input" type="number" id="pal-85-b" value="255" min="0" max="255" oninput="updateSwatch('85')" />
-              </div>
+          <div class="palette-picker-entry">
+            <label class="field-label">Intensity 85</label>
+            <div class="color-picker-wrap">
+              <input type="color" class="color-native" id="cpick-85" value="#00ffff" oninput="onColorPick('85', this.value)" />
+              <div class="color-preview" id="cprev-85" style="background:#00ffff" onclick="document.getElementById('cpick-85').click()"></div>
+            </div>
+            <div class="color-meta">
+              <span class="color-hex" id="chex-85">#00ffff</span>
+              <span class="color-rgb" id="crgb-85">rgb(0, 255, 255)</span>
             </div>
           </div>
 
-          <div class="palette-entry">
-            <div class="palette-swatch" id="sw-128" style="background:rgb(0,255,0)"></div>
-            <div class="palette-info">
-              <label class="field-label">Intensity 128</label>
-              <div class="rgb-row">
-                <span class="rgb-label">R</span><input class="rgb-input" type="number" id="pal-128-r" value="0" min="0" max="255" oninput="updateSwatch('128')" />
-                <span class="rgb-label">G</span><input class="rgb-input" type="number" id="pal-128-g" value="255" min="0" max="255" oninput="updateSwatch('128')" />
-                <span class="rgb-label">B</span><input class="rgb-input" type="number" id="pal-128-b" value="0" min="0" max="255" oninput="updateSwatch('128')" />
-              </div>
+          <div class="palette-picker-entry">
+            <label class="field-label">Intensity 128</label>
+            <div class="color-picker-wrap">
+              <input type="color" class="color-native" id="cpick-128" value="#00ff00" oninput="onColorPick('128', this.value)" />
+              <div class="color-preview" id="cprev-128" style="background:#00ff00" onclick="document.getElementById('cpick-128').click()"></div>
+            </div>
+            <div class="color-meta">
+              <span class="color-hex" id="chex-128">#00ff00</span>
+              <span class="color-rgb" id="crgb-128">rgb(0, 255, 0)</span>
             </div>
           </div>
 
-          <div class="palette-entry">
-            <div class="palette-swatch" id="sw-170" style="background:rgb(255,255,0)"></div>
-            <div class="palette-info">
-              <label class="field-label">Intensity 170</label>
-              <div class="rgb-row">
-                <span class="rgb-label">R</span><input class="rgb-input" type="number" id="pal-170-r" value="255" min="0" max="255" oninput="updateSwatch('170')" />
-                <span class="rgb-label">G</span><input class="rgb-input" type="number" id="pal-170-g" value="255" min="0" max="255" oninput="updateSwatch('170')" />
-                <span class="rgb-label">B</span><input class="rgb-input" type="number" id="pal-170-b" value="0" min="0" max="255" oninput="updateSwatch('170')" />
-              </div>
+          <div class="palette-picker-entry">
+            <label class="field-label">Intensity 170</label>
+            <div class="color-picker-wrap">
+              <input type="color" class="color-native" id="cpick-170" value="#ffff00" oninput="onColorPick('170', this.value)" />
+              <div class="color-preview" id="cprev-170" style="background:#ffff00" onclick="document.getElementById('cpick-170').click()"></div>
+            </div>
+            <div class="color-meta">
+              <span class="color-hex" id="chex-170">#ffff00</span>
+              <span class="color-rgb" id="crgb-170">rgb(255, 255, 0)</span>
             </div>
           </div>
 
-          <div class="palette-entry">
-            <div class="palette-swatch" id="sw-213" style="background:rgb(255,128,0)"></div>
-            <div class="palette-info">
-              <label class="field-label">Intensity 213</label>
-              <div class="rgb-row">
-                <span class="rgb-label">R</span><input class="rgb-input" type="number" id="pal-213-r" value="255" min="0" max="255" oninput="updateSwatch('213')" />
-                <span class="rgb-label">G</span><input class="rgb-input" type="number" id="pal-213-g" value="128" min="0" max="255" oninput="updateSwatch('213')" />
-                <span class="rgb-label">B</span><input class="rgb-input" type="number" id="pal-213-b" value="0" min="0" max="255" oninput="updateSwatch('213')" />
-              </div>
+          <div class="palette-picker-entry">
+            <label class="field-label">Intensity 213</label>
+            <div class="color-picker-wrap">
+              <input type="color" class="color-native" id="cpick-213" value="#ff8000" oninput="onColorPick('213', this.value)" />
+              <div class="color-preview" id="cprev-213" style="background:#ff8000" onclick="document.getElementById('cpick-213').click()"></div>
+            </div>
+            <div class="color-meta">
+              <span class="color-hex" id="chex-213">#ff8000</span>
+              <span class="color-rgb" id="crgb-213">rgb(255, 128, 0)</span>
             </div>
           </div>
 
-          <div class="palette-entry">
-            <div class="palette-swatch" id="sw-255" style="background:rgb(255,0,0)"></div>
-            <div class="palette-info">
-              <label class="field-label">Intensity 255</label>
-              <div class="rgb-row">
-                <span class="rgb-label">R</span><input class="rgb-input" type="number" id="pal-255-r" value="255" min="0" max="255" oninput="updateSwatch('255')" />
-                <span class="rgb-label">G</span><input class="rgb-input" type="number" id="pal-255-g" value="0" min="0" max="255" oninput="updateSwatch('255')" />
-                <span class="rgb-label">B</span><input class="rgb-input" type="number" id="pal-255-b" value="0" min="0" max="255" oninput="updateSwatch('255')" />
-              </div>
+          <div class="palette-picker-entry">
+            <label class="field-label">Intensity 255</label>
+            <div class="color-picker-wrap">
+              <input type="color" class="color-native" id="cpick-255" value="#ff0000" oninput="onColorPick('255', this.value)" />
+              <div class="color-preview" id="cprev-255" style="background:#ff0000" onclick="document.getElementById('cpick-255').click()"></div>
+            </div>
+            <div class="color-meta">
+              <span class="color-hex" id="chex-255">#ff0000</span>
+              <span class="color-rgb" id="crgb-255">rgb(255, 0, 0)</span>
             </div>
           </div>
 
         </div>
+
         <div class="panel-actions">
           <button class="btn-cancel" onclick="cancelPanel('palette')">✕ Cancel</button>
           <button class="btn-submit" onclick="submitPanel('palette')">✓ Apply Changes</button>
