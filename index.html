@@ -82,6 +82,35 @@
           <span class="badge">2</span>
         </button>
 
+        <button class="menu-item" onclick="showPanel('filters', this)">
+          <span class="menu-icon">▤</span>
+          <span class="menu-label">Filters</span>
+          <span class="badge">7</span>
+        </button>
+
+        <button class="menu-item" onclick="showPanel('calibration', this)">
+          <span class="menu-icon">⚙</span>
+          <span class="menu-label">Calibration</span>
+          <span class="badge">6</span>
+        </button>
+
+        <button class="menu-item" onclick="showPanel('alarms', this)">
+          <span class="menu-icon">⚠</span>
+          <span class="menu-label">Alarms</span>
+          <span class="badge">6</span>
+        </button>
+
+      </nav>
+
+      <div class="nav-label nav-label--second">DISPLAY</div>
+      <nav class="nav">
+
+        <button class="menu-item" onclick="showPanel('preview', this)">
+          <span class="menu-icon">⌾</span>
+          <span class="menu-label">Live Preview</span>
+          <span class="badge badge--live">LIVE</span>
+        </button>
+
       </nav>
     </aside>
 
@@ -470,6 +499,235 @@
         <div class="panel-actions">
           <button class="btn-cancel" onclick="cancelPanel('stc')">✕ Cancel</button>
           <button class="btn-submit" onclick="submitPanel('stc')">✓ Apply Changes</button>
+        </div>
+      </div>
+
+      <!-- ── FILTERS ─────────────────────────────────── -->
+      <div id="panel-filters" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">▤</span>
+          <div>
+            <h2 class="panel-title">Filters</h2>
+            <p class="panel-desc">Clutter rejection and target discrimination filters</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group">
+            <label class="field-label" for="filt-medianWindow">Median Filter Window</label>
+            <p class="field-hint">Window size in bins for median despeckling</p>
+            <input class="field-input" type="number" id="filt-medianWindow" value="3" min="1" step="1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="filt-clutterMapAlpha">Clutter Map Alpha</label>
+            <p class="field-hint">Learning rate for adaptive clutter map (0–1)</p>
+            <input class="field-input" type="number" id="filt-clutterMapAlpha" value="0.02" min="0" max="1" step="0.001" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="filt-cfarGuardCells">CFAR Guard Cells</label>
+            <p class="field-hint">Guard cells surrounding cell under test</p>
+            <input class="field-input" type="number" id="filt-cfarGuardCells" value="4" min="0" step="1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="filt-cfarRefCells">CFAR Reference Cells</label>
+            <p class="field-hint">Reference cells used for noise estimation</p>
+            <input class="field-input" type="number" id="filt-cfarRefCells" value="16" min="1" step="1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="filt-cfarThreshold">CFAR Threshold Factor</label>
+            <p class="field-hint">Detection threshold above estimated noise (dB)</p>
+            <input class="field-input" type="number" id="filt-cfarThreshold" value="6.5" min="0" step="0.1" />
+          </div>
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Enable MTI</label>
+            <p class="field-hint">Moving Target Indication — suppress static returns</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="filt-mtiEnable" checked onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-filt-mtiEnable">ON</span>
+            </div>
+          </div>
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Enable Doppler Filter</label>
+            <p class="field-hint">Filter returns by radial velocity</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="filt-dopplerEnable" onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-filt-dopplerEnable">OFF</span>
+            </div>
+          </div>
+
+        </div>
+        <div class="panel-actions">
+          <button class="btn-cancel" onclick="cancelPanel('filters')">✕ Cancel</button>
+          <button class="btn-submit" onclick="submitPanel('filters')">✓ Apply Changes</button>
+        </div>
+      </div>
+
+      <!-- ── CALIBRATION ─────────────────────────────── -->
+      <div id="panel-calibration" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">⚙</span>
+          <div>
+            <h2 class="panel-title">Calibration</h2>
+            <p class="panel-desc">Antenna alignment and range/bearing correction</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group">
+            <label class="field-label" for="cal-boresightOffset">Boresight Offset (degrees)</label>
+            <p class="field-hint">Bearing correction applied to raw azimuth</p>
+            <input class="field-input" type="number" id="cal-boresightOffset" value="0.0" step="0.1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="cal-rangeOffset">Range Offset (meters)</label>
+            <p class="field-hint">Fixed correction applied to raw range</p>
+            <input class="field-input" type="number" id="cal-rangeOffset" value="0" step="1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="cal-antennaHeight">Antenna Height (meters)</label>
+            <p class="field-hint">Height of antenna above mean sea level</p>
+            <input class="field-input" type="number" id="cal-antennaHeight" value="12.5" min="0" step="0.1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="cal-tiltAngle">Tilt Angle (degrees)</label>
+            <p class="field-hint">Antenna elevation tilt relative to horizon</p>
+            <input class="field-input" type="number" id="cal-tiltAngle" value="-1.5" step="0.1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="cal-lastCalibrated">Last Calibrated</label>
+            <p class="field-hint">Date of the most recent calibration run</p>
+            <input class="field-input field-input--text" type="text" id="cal-lastCalibrated" value="2026-06-01" />
+          </div>
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Auto-Calibrate</label>
+            <p class="field-hint">Automatically re-align on startup</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="cal-autoCalibrate" onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-cal-autoCalibrate">OFF</span>
+            </div>
+          </div>
+
+        </div>
+        <div class="panel-actions">
+          <button class="btn-cancel" onclick="cancelPanel('calibration')">✕ Cancel</button>
+          <button class="btn-submit" onclick="submitPanel('calibration')">✓ Apply Changes</button>
+        </div>
+      </div>
+
+      <!-- ── ALARMS ──────────────────────────────────── -->
+      <div id="panel-alarms" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">⚠</span>
+          <div>
+            <h2 class="panel-title">Alarms</h2>
+            <p class="panel-desc">Threshold-based alerting and guard zones</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group">
+            <label class="field-label" for="alarm-highThreshold">High Priority Threshold</label>
+            <p class="field-hint">Intensity level that triggers a high-priority alarm (0–255)</p>
+            <input class="field-input" type="number" id="alarm-highThreshold" value="200" min="0" max="255" step="1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="alarm-latchTime">Alarm Latch Time (seconds)</label>
+            <p class="field-hint">Minimum time an alarm stays active once triggered</p>
+            <input class="field-input" type="number" id="alarm-latchTime" value="5" min="0" step="1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="alarm-zoneMinRange">Guard Zone Min Range (meters)</label>
+            <p class="field-hint">Inner boundary of the monitored guard zone</p>
+            <input class="field-input" type="number" id="alarm-zoneMinRange" value="500" min="0" step="10" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="alarm-zoneMaxRange">Guard Zone Max Range (meters)</label>
+            <p class="field-hint">Outer boundary of the monitored guard zone</p>
+            <input class="field-input" type="number" id="alarm-zoneMaxRange" value="8000" min="0" step="10" />
+          </div>
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Enable Audio Alarm</label>
+            <p class="field-hint">Sound an audible alert on trigger</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="alarm-audioEnable" checked onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-alarm-audioEnable">ON</span>
+            </div>
+          </div>
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Enable Visual Alarm</label>
+            <p class="field-hint">Flash the guard zone boundary on trigger</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="alarm-visualEnable" checked onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-alarm-visualEnable">ON</span>
+            </div>
+          </div>
+
+        </div>
+        <div class="panel-actions">
+          <button class="btn-cancel" onclick="cancelPanel('alarms')">✕ Cancel</button>
+          <button class="btn-submit" onclick="submitPanel('alarms')">✓ Apply Changes</button>
+        </div>
+      </div>
+
+      <!-- ── LIVE PREVIEW ─────────────────────────────── -->
+      <div id="panel-preview" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">⌾</span>
+          <div>
+            <h2 class="panel-title">Live Preview</h2>
+            <p class="panel-desc">PPI scope rendered live from the current configuration — no need to apply first</p>
+          </div>
+        </div>
+
+        <div class="preview-layout">
+          <div class="scope-wrap">
+            <canvas id="scopeCanvas" width="560" height="560"></canvas>
+            <div class="scope-readout" id="scopeReadout"></div>
+          </div>
+
+          <div class="scope-legend">
+            <div class="legend-item"><span class="legend-swatch" style="background:var(--accent2)"></span>Range rings — from Geometric &middot; Max Range</div>
+            <div class="legend-item"><span class="legend-swatch" style="background:var(--accent)"></span>Sweep &amp; returns — from DSP &middot; STC &middot; FTC &middot; Palette</div>
+            <div class="legend-item"><span class="legend-swatch land"></span>Land mass — from Land Mask &middot; Range / Offset</div>
+            <div class="legend-item"><span class="legend-swatch excl"></span>Azimuth exclusion — from Land Mask &middot; Ignore Az bins</div>
+            <p class="legend-hint">Adjust any field in the other panels, then switch back here — the scope reads current values every frame.</p>
+          </div>
+        </div>
+
+        <div class="panel-actions">
+          <button class="btn-cancel" onclick="clearScopeTrails()">✕ Clear Trails</button>
+          <button class="btn-submit" onclick="togglePausePreview()" id="pausePreviewBtn">⏸ Pause</button>
         </div>
       </div>
 
