@@ -102,13 +102,83 @@
 
       </nav>
 
-      <div class="nav-label nav-label--second">DISPLAY</div>
+      <div class="nav-label nav-label--second">SYSTEM</div>
+      <nav class="nav">
+
+        <button class="menu-item" onclick="showPanel('recording', this)">
+          <span class="menu-icon">⏺</span>
+          <span class="menu-label">Recording</span>
+          <span class="badge">6</span>
+        </button>
+
+        <button class="menu-item" onclick="showPanel('access', this)">
+          <span class="menu-icon">⛊</span>
+          <span class="menu-label">Access Control</span>
+          <span class="badge">6</span>
+        </button>
+
+        <button class="menu-item" onclick="showPanel('interface', this)">
+          <span class="menu-icon">▦</span>
+          <span class="menu-label">Interface</span>
+          <span class="badge">6</span>
+        </button>
+
+        <button class="menu-item" onclick="showPanel('diagnostics', this)">
+          <span class="menu-icon">◐</span>
+          <span class="menu-label">Diagnostics</span>
+          <span class="badge">10</span>
+        </button>
+
+        <button class="menu-item" onclick="showPanel('environmental', this)">
+          <span class="menu-icon">☔</span>
+          <span class="menu-label">Environmental</span>
+          <span class="badge">6</span>
+        </button>
+
+        <button class="menu-item" onclick="showPanel('exportimport', this)">
+          <span class="menu-icon">⇅</span>
+          <span class="menu-label">Export / Import</span>
+          <span class="badge">6</span>
+        </button>
+
+      </nav>
+
+      <div class="nav-label nav-label--second">SCOPE</div>
       <nav class="nav">
 
         <button class="menu-item" onclick="showPanel('preview', this)">
           <span class="menu-icon">⌾</span>
           <span class="menu-label">Live Preview</span>
           <span class="badge badge--live">LIVE</span>
+        </button>
+
+      </nav>
+
+      <div class="nav-label nav-label--second">REFERENCE</div>
+      <nav class="nav">
+
+        <button class="menu-item" onclick="showPanel('shortcuts', this)">
+          <span class="menu-icon">⌨</span>
+          <span class="menu-label">Shortcuts</span>
+          <span class="badge">14</span>
+        </button>
+
+        <button class="menu-item" onclick="showPanel('changelog', this)">
+          <span class="menu-icon">⟲</span>
+          <span class="menu-label">Changelog</span>
+          <span class="badge">8</span>
+        </button>
+
+        <button class="menu-item" onclick="showPanel('about', this)">
+          <span class="menu-icon">ℹ</span>
+          <span class="menu-label">About</span>
+          <span class="badge">7</span>
+        </button>
+
+        <button class="menu-item" onclick="showPanel('glossary', this)">
+          <span class="menu-icon">✎</span>
+          <span class="menu-label">Glossary</span>
+          <span class="badge">16</span>
         </button>
 
       </nav>
@@ -700,6 +770,416 @@
         </div>
       </div>
 
+      <!-- ── RECORDING ───────────────────────────────── -->
+      <div id="panel-recording" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">⏺</span>
+          <div>
+            <h2 class="panel-title">Recording</h2>
+            <p class="panel-desc">Raw scan capture and archival settings</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Enable Recording</label>
+            <p class="field-hint">Capture raw scan data to disk</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="rec-enable" onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-rec-enable">OFF</span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="rec-path">Recording Path</label>
+            <p class="field-hint">Directory where scan captures are written</p>
+            <input class="field-input field-input--text" type="text" id="rec-path" value="/data/radar/recordings" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="rec-maxFileSize">Max File Size (MB)</label>
+            <p class="field-hint">Size at which a new capture file is started</p>
+            <input class="field-input" type="number" id="rec-maxFileSize" value="512" min="1" step="1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="rec-retentionDays">Retention (days)</label>
+            <p class="field-hint">Automatically delete captures older than this</p>
+            <input class="field-input" type="number" id="rec-retentionDays" value="30" min="0" step="1" />
+          </div>
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Enable Compression</label>
+            <p class="field-hint">Compress captures to save disk space</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="rec-compression" checked onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-rec-compression">ON</span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="rec-format">Recording Format</label>
+            <p class="field-hint">Container format used for captured scans</p>
+            <input class="field-input field-input--text" type="text" id="rec-format" value="RAW16" />
+          </div>
+
+        </div>
+        <div class="panel-actions">
+          <button class="btn-cancel" onclick="cancelPanel('recording')">✕ Cancel</button>
+          <button class="btn-submit" onclick="submitPanel('recording')">✓ Apply Changes</button>
+        </div>
+      </div>
+
+      <!-- ── ACCESS CONTROL ──────────────────────────── -->
+      <div id="panel-access" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">⛊</span>
+          <div>
+            <h2 class="panel-title">Access Control</h2>
+            <p class="panel-desc">Operator identity, permissions, and session policy</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group">
+            <label class="field-label" for="acc-operatorName">Operator Name</label>
+            <p class="field-hint">Identity attached to this console session</p>
+            <input class="field-input field-input--text" type="text" id="acc-operatorName" value="Watch Officer" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="acc-accessLevel">Access Level</label>
+            <p class="field-hint">Permission tier assigned to the current operator</p>
+            <input class="field-input field-input--text" type="text" id="acc-accessLevel" value="Level 2 - Operator" />
+          </div>
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Enable Remote Access</label>
+            <p class="field-hint">Allow configuration changes from remote clients</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="acc-remoteAccess" onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-acc-remoteAccess">OFF</span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="acc-sessionTimeout">Session Timeout (minutes)</label>
+            <p class="field-hint">Idle time before the console locks automatically</p>
+            <input class="field-input" type="number" id="acc-sessionTimeout" value="30" min="1" step="1" />
+          </div>
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Enable Audit Log</label>
+            <p class="field-hint">Record every configuration change with operator and timestamp</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="acc-auditLog" checked onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-acc-auditLog">ON</span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="acc-maxFailedLogins">Max Failed Login Attempts</label>
+            <p class="field-hint">Attempts allowed before the account is locked</p>
+            <input class="field-input" type="number" id="acc-maxFailedLogins" value="5" min="1" step="1" />
+          </div>
+
+        </div>
+        <div class="panel-actions">
+          <button class="btn-cancel" onclick="cancelPanel('access')">✕ Cancel</button>
+          <button class="btn-submit" onclick="submitPanel('access')">✓ Apply Changes</button>
+        </div>
+      </div>
+
+      <!-- ── INTERFACE ────────────────────────────────── -->
+      <div id="panel-interface" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">▦</span>
+          <div>
+            <h2 class="panel-title">Interface</h2>
+            <p class="panel-desc">Console display and overlay preferences</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Grid Overlay</label>
+            <p class="field-hint">Show reference grid across the scope</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="ui-gridOverlay" onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-ui-gridOverlay">OFF</span>
+            </div>
+          </div>
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Show Cursor Readout</label>
+            <p class="field-hint">Display range and bearing under the cursor</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="ui-cursorReadout" checked onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-ui-cursorReadout">ON</span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="ui-refreshRate">Refresh Rate (Hz)</label>
+            <p class="field-hint">Display redraw frequency</p>
+            <input class="field-input" type="number" id="ui-refreshRate" value="30" min="1" max="120" step="1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="ui-trailLength">Trail Length (scans)</label>
+            <p class="field-hint">Number of past scans kept visible when accumulating</p>
+            <input class="field-input" type="number" id="ui-trailLength" value="12" min="0" step="1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="ui-brightness">Background Brightness</label>
+            <p class="field-hint">Overall display brightness level (0–100)</p>
+            <input class="field-input" type="number" id="ui-brightness" value="65" min="0" max="100" step="1" />
+          </div>
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Show Crosshair</label>
+            <p class="field-hint">Draw a center crosshair over the scope</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="ui-crosshair" checked onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-ui-crosshair">ON</span>
+            </div>
+          </div>
+
+        </div>
+        <div class="panel-actions">
+          <button class="btn-cancel" onclick="cancelPanel('interface')">✕ Cancel</button>
+          <button class="btn-submit" onclick="submitPanel('interface')">✓ Apply Changes</button>
+        </div>
+      </div>
+
+      <!-- ── DIAGNOSTICS ──────────────────────────────── -->
+      <div id="panel-diagnostics" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">◐</span>
+          <div>
+            <h2 class="panel-title">Diagnostics</h2>
+            <p class="panel-desc">Live system health readout (read-only)</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group">
+            <label class="field-label" for="diag-uptime">Uptime (hours)</label>
+            <p class="field-hint">Time since the processing unit last restarted</p>
+            <input class="field-input" type="number" id="diag-uptime" value="128.4" readonly />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="diag-cpuLoad">CPU Load (%)</label>
+            <p class="field-hint">Current processor utilization</p>
+            <input class="field-input" type="number" id="diag-cpuLoad" value="34" readonly />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="diag-memUsage">Memory Usage (%)</label>
+            <p class="field-hint">Current RAM utilization</p>
+            <input class="field-input" type="number" id="diag-memUsage" value="61" readonly />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="diag-antennaRpm">Antenna RPM</label>
+            <p class="field-hint">Current antenna rotation speed</p>
+            <input class="field-input" type="number" id="diag-antennaRpm" value="24" readonly />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="diag-txPower">Transmitter Power (kW)</label>
+            <p class="field-hint">Measured output power at the transmitter</p>
+            <input class="field-input" type="number" id="diag-txPower" value="25" readonly />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="diag-noiseFloor">Receiver Noise Floor (dBm)</label>
+            <p class="field-hint">Measured background noise level at the receiver</p>
+            <input class="field-input" type="number" id="diag-noiseFloor" value="-98" readonly />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="diag-temperature">Internal Temperature (°C)</label>
+            <p class="field-hint">Temperature inside the processing enclosure</p>
+            <input class="field-input" type="number" id="diag-temperature" value="42" readonly />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="diag-linkQuality">Link Quality (%)</label>
+            <p class="field-hint">Quality of the multicast data link</p>
+            <input class="field-input" type="number" id="diag-linkQuality" value="97" readonly />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="diag-lastRestart">Last Restart</label>
+            <p class="field-hint">Date and time of the most recent restart</p>
+            <input class="field-input field-input--text" type="text" id="diag-lastRestart" value="2026-06-28 06:12" readonly />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="diag-firmwareVersion">Firmware Version</label>
+            <p class="field-hint">Version currently running on the processing unit</p>
+            <input class="field-input field-input--text" type="text" id="diag-firmwareVersion" value="v4.2.1" readonly />
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── ENVIRONMENTAL ────────────────────────────── -->
+      <div id="panel-environmental" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">☔</span>
+          <div>
+            <h2 class="panel-title">Environmental</h2>
+            <p class="panel-desc">Sea and weather condition compensation</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group">
+            <label class="field-label" for="env-seaState">Sea State</label>
+            <p class="field-hint">Douglas sea state scale (0–9)</p>
+            <input class="field-input" type="number" id="env-seaState" value="3" min="0" max="9" step="1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="env-rainRate">Rain Rate Compensation (mm/hr)</label>
+            <p class="field-hint">Estimated precipitation rate used for attenuation correction</p>
+            <input class="field-input" type="number" id="env-rainRate" value="0" min="0" step="0.5" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="env-windSpeed">Wind Speed (knots)</label>
+            <p class="field-hint">Surface wind speed used for sea clutter modeling</p>
+            <input class="field-input" type="number" id="env-windSpeed" value="12" min="0" step="1" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="env-waveHeight">Significant Wave Height (m)</label>
+            <p class="field-hint">Average height of the highest third of waves</p>
+            <input class="field-input" type="number" id="env-waveHeight" value="1.2" min="0" step="0.1" />
+          </div>
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Enable Weather Compensation</label>
+            <p class="field-hint">Adjust sensitivity for rain and moisture attenuation</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="env-weatherComp" checked onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-env-weatherComp">ON</span>
+            </div>
+          </div>
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Enable Sea Clutter Suppression</label>
+            <p class="field-hint">Reduce false returns caused by wave action</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="env-seaClutterSuppression" checked onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-env-seaClutterSuppression">ON</span>
+            </div>
+          </div>
+
+        </div>
+        <div class="panel-actions">
+          <button class="btn-cancel" onclick="cancelPanel('environmental')">✕ Cancel</button>
+          <button class="btn-submit" onclick="submitPanel('environmental')">✓ Apply Changes</button>
+        </div>
+      </div>
+
+      <!-- ── EXPORT / IMPORT ──────────────────────────── -->
+      <div id="panel-exportimport" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">⇅</span>
+          <div>
+            <h2 class="panel-title">Export / Import</h2>
+            <p class="panel-desc">Configuration backup and restore settings</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Auto-Export Configuration</label>
+            <p class="field-hint">Periodically write a full config backup to disk</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="exp-autoExport" checked onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-exp-autoExport">ON</span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="exp-exportPath">Export Path</label>
+            <p class="field-hint">Directory where configuration backups are saved</p>
+            <input class="field-input field-input--text" type="text" id="exp-exportPath" value="/data/radar/config-backups" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="exp-exportInterval">Export Interval (hours)</label>
+            <p class="field-hint">Time between automatic configuration backups</p>
+            <input class="field-input" type="number" id="exp-exportInterval" value="24" min="1" step="1" />
+          </div>
+
+          <div class="field-group field-group--bool">
+            <label class="field-label">Include Calibration Data</label>
+            <p class="field-hint">Bundle antenna calibration values with each backup</p>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="exp-includeCalibration" checked onchange="updateToggleLabel(this)" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+              <span class="toggle-state-label" id="lbl-exp-includeCalibration">ON</span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="exp-format">Export Format</label>
+            <p class="field-hint">File format used for configuration backups</p>
+            <input class="field-input field-input--text" type="text" id="exp-format" value="JSON" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="exp-lastExport">Last Export Timestamp</label>
+            <p class="field-hint">Date and time of the most recent backup</p>
+            <input class="field-input field-input--text" type="text" id="exp-lastExport" value="2026-07-03 22:00" readonly />
+          </div>
+
+        </div>
+        <div class="panel-actions">
+          <button class="btn-cancel" onclick="cancelPanel('exportimport')">✕ Cancel</button>
+          <button class="btn-submit" onclick="submitPanel('exportimport')">✓ Apply Changes</button>
+        </div>
+      </div>
+
       <!-- ── LIVE PREVIEW ─────────────────────────────── -->
       <div id="panel-preview" class="panel">
         <div class="panel-header">
@@ -728,6 +1208,287 @@
         <div class="panel-actions">
           <button class="btn-cancel" onclick="clearScopeTrails()">✕ Clear Trails</button>
           <button class="btn-submit" onclick="togglePausePreview()" id="pausePreviewBtn">⏸ Pause</button>
+        </div>
+      </div>
+
+      <!-- ── SHORTCUTS ────────────────────────────────── -->
+      <div id="panel-shortcuts" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">⌨</span>
+          <div>
+            <h2 class="panel-title">Shortcuts</h2>
+            <p class="panel-desc">Keyboard reference for common console actions</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group">
+            <label class="field-label">Ctrl + S</label>
+            <p class="field-hint">Apply changes in the current panel</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Ctrl + Z</label>
+            <p class="field-hint">Discard changes in the current panel</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">1 – 9</label>
+            <p class="field-hint">Jump directly to a sidebar panel by position</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Space</label>
+            <p class="field-hint">Pause or resume the Live Preview sweep</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">C</label>
+            <p class="field-hint">Clear Live Preview trails and reseed contacts</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">+ / -</label>
+            <p class="field-hint">Zoom the scope in or out</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">R</label>
+            <p class="field-hint">Reset scope zoom to the default level</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">F</label>
+            <p class="field-hint">Toggle fullscreen for the current panel</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Esc</label>
+            <p class="field-hint">Close the active color picker</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Tab</label>
+            <p class="field-hint">Move focus to the next field</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Shift + Tab</label>
+            <p class="field-hint">Move focus to the previous field</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Ctrl + Shift + D</label>
+            <p class="field-hint">Open the Diagnostics panel</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Ctrl + Shift + L</label>
+            <p class="field-hint">Open Live Preview</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Ctrl + /</label>
+            <p class="field-hint">Open this shortcuts reference</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── CHANGELOG ────────────────────────────────── -->
+      <div id="panel-changelog" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">⟲</span>
+          <div>
+            <h2 class="panel-title">Changelog</h2>
+            <p class="panel-desc">Version history for this configuration console</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group">
+            <label class="field-label">v4.2.1 — 2026-06-28</label>
+            <p class="field-hint">Added the Diagnostics panel and live firmware/uptime readout</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">v4.2.0 — 2026-06-14</label>
+            <p class="field-hint">Introduced Recording controls and configurable retention policy</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">v4.1.2 — 2026-05-30</label>
+            <p class="field-hint">Added Access Control with session timeout and audit logging</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">v4.1.1 — 2026-05-12</label>
+            <p class="field-hint">Interface panel added for grid overlay and trail length settings</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">v4.1.0 — 2026-04-27</label>
+            <p class="field-hint">Live Preview scope introduced, rendering directly from panel state</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">v4.0.3 — 2026-04-09</label>
+            <p class="field-hint">Added CFAR-based Filters panel for clutter and target discrimination</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">v4.0.2 — 2026-03-22</label>
+            <p class="field-hint">Alarms panel added with guard-zone range and latch time controls</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">v4.0.0 — 2026-03-01</label>
+            <p class="field-hint">Initial release: DSP, FTC, Geometric, Land Mask, Network, Palette, STC</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── ABOUT ────────────────────────────────────── -->
+      <div id="panel-about" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">ℹ</span>
+          <div>
+            <h2 class="panel-title">About</h2>
+            <p class="panel-desc">System identity and reference information</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group">
+            <label class="field-label">System Name</label>
+            <p class="field-hint">Radar Scan Converter</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Console Version</label>
+            <p class="field-hint">v4.2.1</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Hardware Platform</label>
+            <p class="field-hint">Signal processing unit with multicast scan output</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Supported Scan Types</label>
+            <p class="field-hint">Surface search, coastal surveillance, vessel traffic monitoring</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Data Output</label>
+            <p class="field-hint">UDP multicast, configurable in the Network panel</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Documentation</label>
+            <p class="field-hint">Refer to the operator handbook for full parameter descriptions</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Support</label>
+            <p class="field-hint">Contact your system administrator for configuration assistance</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── GLOSSARY ─────────────────────────────────── -->
+      <div id="panel-glossary" class="panel">
+        <div class="panel-header">
+          <span class="panel-icon">✎</span>
+          <div>
+            <h2 class="panel-title">Glossary</h2>
+            <p class="panel-desc">Terms used throughout this console</p>
+          </div>
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-group">
+            <label class="field-label">DSP</label>
+            <p class="field-hint">Digital Signal Processing — converts raw returns into a display-ready signal</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">FTC</label>
+            <p class="field-hint">Fast Time Constant — a filter that reduces short-range rain and clutter</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">STC</label>
+            <p class="field-hint">Sensitivity Time Control — reduces gain near the radar to limit clutter</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">CFAR</label>
+            <p class="field-hint">Constant False Alarm Rate — adapts the detection threshold to local noise</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">MTI</label>
+            <p class="field-hint">Moving Target Indication — suppresses returns from stationary objects</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">PPI</label>
+            <p class="field-hint">Plan Position Indicator — the classic circular sweep radar display</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Boresight</label>
+            <p class="field-hint">The antenna's reference bearing, used to align azimuth to true north</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Multicast</label>
+            <p class="field-hint">A network delivery method that streams scan data to many receivers at once</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Azimuth Bin</label>
+            <p class="field-hint">One discrete bearing slice of a full 360° rotation</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Range Bin</label>
+            <p class="field-hint">One discrete distance slice along a radar beam</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Clutter Map</label>
+            <p class="field-hint">A learned map of persistent, non-target returns used to suppress them</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Doppler Filter</label>
+            <p class="field-hint">Separates returns by radial velocity to isolate moving targets</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Land Mask</label>
+            <p class="field-hint">A defined coastline boundary used to suppress or highlight land returns</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Noise Floor</label>
+            <p class="field-hint">The baseline receiver noise level against which targets are detected</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Guard Cell</label>
+            <p class="field-hint">A cell adjacent to the cell under test, excluded from noise estimation</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Sea Clutter</label>
+            <p class="field-hint">False returns caused by wave action, strongest in high sea states</p>
+          </div>
+
         </div>
       </div>
 
