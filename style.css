@@ -24,7 +24,6 @@
 }
 
 html, body { height: 100%; }
-
 body {
   font-family: var(--mono);
   background: var(--bg);
@@ -150,6 +149,10 @@ body {
   margin-bottom: 8px;
 }
 
+.nav-label--second {
+  margin-top: 18px;
+}
+
 .nav { display: flex; flex-direction: column; gap: 2px; }
 
 /* ── MENU ITEMS ───────────────────────────────────── */
@@ -213,6 +216,17 @@ body {
 .menu-item.active .badge {
   background: rgba(0,229,255,0.15);
   color: var(--accent);
+}
+
+.badge--live {
+  background: rgba(0,255,136,0.12);
+  color: var(--accent2);
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+.menu-item.active .badge--live {
+  background: rgba(0,255,136,0.2);
+  color: var(--accent2);
 }
 
 /* ── MAIN ─────────────────────────────────────────── */
@@ -527,6 +541,93 @@ body {
   font-size: 9px;
   color: var(--text-muted);
   letter-spacing: 0.02em;
+}
+
+/* ── LIVE PREVIEW SCOPE ───────────────────────────── */
+
+.preview-layout {
+  display: flex;
+  gap: 28px;
+  width: 100%;
+  margin-bottom: 28px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.scope-wrap {
+  position: relative;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 30px rgba(0,229,255,0.10));
+}
+
+#scopeCanvas {
+  display: block;
+  border-radius: 50%;
+  background: #03050a;
+  border: 1px solid var(--border);
+  max-width: 100%;
+  height: auto;
+}
+
+.scope-readout {
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 5px 12px;
+  border-radius: 6px;
+}
+
+.scope-legend {
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+
+.legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-swatch.land {
+  background: rgba(0,255,136,0.35);
+  border: 1px dashed rgba(0,255,136,0.6);
+  border-radius: 4px;
+}
+
+.legend-swatch.excl {
+  background: rgba(255,64,96,0.3);
+  border-radius: 4px;
+}
+
+.legend-hint {
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
 }
 
 /* ── ACTIONS ──────────────────────────────────────── */
